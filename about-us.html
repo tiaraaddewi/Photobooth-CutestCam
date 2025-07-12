@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - CutestCam</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Jim+Nightshade&family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .video-bg.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <!-- 🎥 Background Videos -->
+  <video id="bg1" autoplay muted loop class="video-bg active">
+    <source src="assets/background.webm" type="video/webm">
+  </video>
+  <video id="bg2" autoplay muted loop class="video-bg">
+    <source src="assets/video2.webm" type="video/webm">
+  </video>
+  <video id="bg3" autoplay muted loop class="video-bg">
+    <source src="assets/video3.webm" type="video/webm">
+  </video>
+
+  <!-- 💬 Konten -->
+  <div class="p-6 w-full max-w-md bg-white/70 rounded shadow-lg text-black font-[Jim+Nightshade] text-[13px] leading-relaxed text-justify">
+    <h1 class="text-[40px] text-center text-rose-600 font-[Instrument_Serif] drop-shadow-[1px_1px_0px_black] mb-4 uppercase">ABOUT US</h1>
+
+    <!-- Isi konten seperti biasa -->
+    <p>Halo semuanya! Namaku Tiara Dewi. Saat ini aku merupakan mahasiswi S1 yang tertarik dalam bidang sosial, pendidikan, bisnis, dan teknologi digital. Salah satu hal yang sedang aku kembangkan adalah sebuah website dan aplikasi digital yang dibuat melalui proses belajar kode di komputer.</p>
+    <p class="mt-4">CutestCam adalah photobooth digital bertema pastel yang hadir dengan desain lucu dan interaktif. Tidak seperti photobooth biasa, CutestCam lahir dari semangat untuk bertumbuh, belajar hal baru seperti desain dan coding secara otodidak, serta mengisi waktu dengan kegiatan yang produktif. Karya ini adalah bentuk cinta dan usaha, yang akan terus aku kembangkan agar menjadi media menyenangkan untuk siapa pun yang ingin mengabadikan kenangan.</p>
+
+    <ul class="mt-4 space-y-1">
+      <li>📍 Created in Cimahi, Jawa Barat, Indonesia</li>
+      <li>📩 Instagram: @tiaraaddewi</li>
+      <li>📧 Email: tiaraaddewi@gmail.com</li>
+    </ul>
+
+    <div class="flex justify-center mt-6">
+      <a href="index.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">CANCEL</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- 🔁 Script untuk fade video -->
+  <script>
+    const videos = [bg1, bg2, bg3];
+    let current = 0;
+
+    setInterval(() => {
+      videos.forEach((v, i) => v.classList.remove('active'));
+      current = (current + 1) % videos.length;
+      videos[current].classList.add('active');
+    }, 2000); // ganti setiap 2 detik
+  </script>
+
+</body>
+</html>

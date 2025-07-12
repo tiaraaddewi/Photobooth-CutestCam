@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirm Layout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=jsMath+cmti10&display=swap" rel="stylesheet">
+  <style>
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .video-bg.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <!-- 🎥 Video Background -->
+  <video id="bg1" autoplay muted loop class="video-bg active"><source src="assets/background.webm" type="video/webm"></video>
+  <video id="bg2" autoplay muted loop class="video-bg"><source src="assets/video2.webm" type="video/webm"></video>
+  <video id="bg3" autoplay muted loop class="video-bg"><source src="assets/video3.webm" type="video/webm"></video>
+
+  <!-- 💖 Konten -->
+  <div class="text-center p-6 w-full max-w-sm bg-white/70 rounded shadow-lg">
+    <h1 class="text-[32px] uppercase font-[Instrument_Serif] text-rose-500 drop-shadow-[1px_1px_0px_black] mb-6">Your Layout</h1>
+
+    <img id="selectedImage" src="" alt="Selected Layout" class="mx-auto rounded-lg w-40 border-2 border-rose-300">
+    <p id="selectedText" class="mt-2 text-[13px] text-black font-[jsMath-cmti10]"></p>
+
+    <div class="mt-8 flex flex-col items-center space-y-4">
+      <button id="continueBtn" class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">CONTINUE</button>
+      <a id="cancelBtn" href="choose-layout.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">CANCEL</button>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // 🎥 Fade video
+    const vids = [document.getElementById("bg1"), document.getElementById("bg2"), document.getElementById("bg3")];
+    let i = 0;
+    setInterval(() => {
+      vids.forEach(v => v.classList.remove("active"));
+      vids[i].classList.add("active");
+      i = (i + 1) % vids.length;
+    }, 2000);
+
+    // 🔄 Ambil layout dari URL
+    const params = new URLSearchParams(window.location.search);
+    const layout = params.get("layout") || "layout-a";
+    const poses = { "layout-a": "4 Pose", "layout-b": "4 Pose", "layout-c": "2 Pose" };
+
+    document.getElementById("selectedImage").src = `assets/${layout}.jpg`;
+    document.getElementById("selectedText").innerText = `Layout: ${layout.replace('layout-', 'Layout ').toUpperCase()} (${poses[layout]})`;
+
+    // Arahkan ke webcam.html sambil bawa layout
+    document.getElementById("continueBtn").onclick = () => {
+      window.location.href = `webcam.html?layout=${layout}`;
+    };
+  </script>
+</body>
+</html>

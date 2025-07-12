@@ -1,0 +1,12 @@
+/* style.css */
+
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+}
+
+/* Font fallback jika jsMath tidak tersedia */
+@font-face {
+  font-family: 'jsMath-cmti10';
+  src: local('Times New Roman'), serif;
+}

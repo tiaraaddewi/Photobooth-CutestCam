@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choose Layout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .video-bg.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <!-- 🎥 3 Video Background -->
+  <video id="bg1" autoplay muted loop class="video-bg active">
+    <source src="assets/background.webm" type="video/webm">
+  </video>
+  <video id="bg2" autoplay muted loop class="video-bg">
+    <source src="assets/video2.webm" type="video/webm">
+  </video>
+  <video id="bg3" autoplay muted loop class="video-bg">
+    <source src="assets/video3.webm" type="video/webm">
+  </video>
+
+  <!-- 📸 Konten Pilih Layout -->
+  <div class="text-center p-6 w-full max-w-md bg-white/70 rounded shadow-lg">
+    <h1 class="text-[32px] font-bold text-rose-500 font-[Instrument_Serif] drop-shadow-[1px_1px_0px_black] uppercase mb-6">Choose Your Layout</h1>
+
+    <div class="mt-6 grid grid-cols-2 gap-6">
+      <button id="layout-a" onclick="selectLayout('layout-a')" class="layout-btn flex flex-col items-center">
+        <img src="assets/layout-a.jpg" alt="Layout A" class="w-40 rounded-lg border-2 border-rose-300">
+        <span class="text-[12px] font-['jsMath-cmti10'] text-black mt-1">Layout A (4 pose)</span>
+      </button>
+
+      <div class="flex flex-col items-center space-y-4">
+        <button id="layout-b" onclick="selectLayout('layout-b')" class="layout-btn flex flex-col items-center">
+          <img src="assets/layout-b.jpg" alt="Layout B" class="w-40 rounded-lg border-2 border-rose-300">
+          <span class="text-[12px] font-['jsMath-cmti10'] text-black mt-1">Layout B (4 pose)</span>
+        </button>
+        <button id="layout-c" onclick="selectLayout('layout-c')" class="layout-btn flex flex-col items-center">
+          <img src="assets/layout-c.jpg" alt="Layout C" class="w-40 rounded-lg border-2 border-rose-300">
+          <span class="text-[12px] font-['jsMath-cmti10'] text-black mt-1">Layout C (2 pose)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div class="mt-8 flex flex-col items-center space-y-3">
+      <button onclick="handleContinue()" class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">CONTINUE</button>
+      <a href="welcome.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">CANCEL</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- 🔁 JavaScript -->
+  <script>
+    const videos = [bg1, bg2, bg3];
+    let index = 0;
+
+    setInterval(() => {
+      videos.forEach((vid, i) => vid.classList.remove('active'));
+      index = (index + 1) % videos.length;
+      videos[index].classList.add('active');
+    }, 2000); // Ganti tiap 2 detik
+
+    // 📸 Pilihan Layout
+    let selectedLayout = "";
+    function selectLayout(layoutName) {
+      selectedLayout = layoutName;
+      document.querySelectorAll('.layout-btn').forEach(btn => {
+        btn.classList.remove('ring-4', 'ring-pink-200', 'bg-pink-200', 'shadow-lg', 'scale-105');
+      });
+      document.getElementById(layoutName).classList.add('ring-4', 'ring-pink-200', 'bg-pink-200', 'shadow-lg', 'scale-105');
+    }
+
+    function handleContinue() {
+      if (selectedLayout) {
+        window.location.href = `confirm-layout.html?layout=${selectedLayout}`;
+      } else {
+        alert("You have to choose your layout first! 😊");
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CutestCam Photobooth</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Jim+Nightshade&family=Poppins&display=swap" rel="stylesheet">
+
+  <style>
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .bg-video.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <!-- 🎥 3 video bergantian -->
+  <video id="bg1" class="bg-video active" autoplay muted loop>
+    <source src="assets/background.webm" type="video/webm">
+  </video>
+  <video id="bg2" class="bg-video" autoplay muted loop>
+    <source src="assets/video2.webm" type="video/webm">
+  </video>
+  <video id="bg3" class="bg-video" autoplay muted loop>
+    <source src="assets/video3.webm" type="video/webm">
+  </video>
+
+  <!-- ✅ Konten utama -->
+  <div class="text-center p-6 w-full max-w-sm bg-white/70 rounded shadow-lg">
+    <h1 class="text-[57px] font-bold text-rose-600 font-[Italianno] drop-shadow-[1px_1px_0px_black]">CutestCam</h1>
+    <h2 class="text-[57px] font-bold text-rose-600 font-[Italianno] drop-shadow-[1px_1px_0px_black]">Photobooth</h2>
+    <p class="mt-2 text-black text-[13px] font-[jim+Nightshade]">by: Tiara Dewi</p>
+
+    <img src="assets/camera.jpg" alt="Camera" class="mx-auto mt-3 rounded-lg w-40">
+
+    <div class="mt-8 flex flex-col items-center space-y-4">
+      <a href="welcome.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">START</button>
+      </a>
+      <a href="about-us.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">ABOUT US</button>
+      </a>
+    </div>
+
+    <p class="mt-8 text-xs text-black font-[Poppins] text-center">© 2025 CutestCam. All rights reserved.</p>
+  </div>
+
+  <!-- 🔄 Script untuk transisi halus antar video -->
+  <script>
+    const videos = [document.getElementById('bg1'), document.getElementById('bg2'), document.getElementById('bg3')];
+    let current = 0;
+
+    setInterval(() => {
+      videos.forEach((vid, idx) => {
+        vid.classList.toggle('active', idx === current);
+      });
+      current = (current + 1) % videos.length;
+    }, 2000); // ganti tiap 2 detik
+  </script>
+
+</body>
+</html>

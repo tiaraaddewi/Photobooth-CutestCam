@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download Photo Strip</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'jsMath-cmti10';
+      src: local('serif');
+    }
+    body {
+      margin: 0;
+      font-family: 'jsMath-cmti10', serif;
+      text-align: center;
+      color: black;
+      position: relative;
+    }
+    #bgVideo {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      transition: opacity 0.5s ease;
+    }
+    #bgVideo.fade-out {
+      opacity: 0;
+    }
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px;
+      color: #F8AFC4;
+      -webkit-text-stroke: 1px black;
+      margin-top: 20px;
+    }
+    #photo-strip {
+      margin: 20px auto;
+      background-color: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      position: relative;
+      width: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #photos-container.layout-a {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    #photos-container.layout-b {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+    }
+    #photos-container.layout-c {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+    }
+    .photo {
+      width: 125px;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+    }
+    #signature-container {
+      margin-top: 5px;
+      text-align: center;
+    }
+    #signature, #timestamp {
+      font-size: 7px;
+      color: black;
+      font-family: 'jsMath-cmti10', serif;
+    }
+    .options-title {
+      font-size: 12px;
+      margin-top: 20px;
+    }
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      width: 240px;
+      margin: 10px auto;
+    }
+    button {
+      font-family: 'jsMath-cmti10', serif;
+      font-size: 13px;
+      padding: 6px;
+      background-color: white;
+      border: 1px solid black;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    button.selected {
+      background-color: #F8AFC4;
+      border: none;
+    }
+    #downloadBtn, #cancelBtn {
+      background-color: #F8AFC4;
+      font-size: 13px;
+      color: black;
+      margin: 15px 10px;
+      padding: 10px 20px;
+      border: 1px solid black;
+      border-radius: 20px;
+      font-family: 'jsMath-cmti10', serif;
+      cursor: pointer;
+    }
+    .sticker {
+      position: absolute;
+      width: 37px;
+      height: 37px;
+    }
+    .top-left { top: 0; left: 0; }
+    .top-right { top: 0; right: 0; }
+    .bottom-left { bottom: 0; left: 0; }
+    .bottom-right { bottom: 0; right: 0; }
+  </style>
+</head>
+<body>
+  <video id="bgVideo" autoplay muted loop></video>
+
+  <h1>PHOTO STRIP PREVIEW</h1>
+  <p class="text-[12px] text-black">Layout: <span id="layoutLabel">Layout A</span></p>
+
+  <div id="photo-strip">
+    <div id="photos-container" class="layout-a">
+      <img id="photo1" class="photo" src="" alt="Photo" />
+      <img id="photo2" class="photo" src="" alt="Photo" />
+      <img id="photo3" class="photo" src="" alt="Photo" />
+      <img id="photo4" class="photo" src="" alt="Photo" />
+    </div>
+    <div id="signature-container">
+      <div id="signature">tiarabooth.CutestCam</div>
+      <div id="timestamp"></div>
+    </div>
+    <img class="sticker top-left" style="display:none" />
+    <img class="sticker top-right" style="display:none" />
+    <img class="sticker bottom-left" style="display:none" />
+    <img class="sticker bottom-right" style="display:none" />
+  </div>
+
+  <div class="options-title">Frame Your Colour</div>
+  <div class="btn-group" id="frame-options">
+    <button onclick="selectFrameColor(this, 'White')">White</button>
+    <button onclick="selectFrameColor(this, '#E0CFC1')">Light Mocha</button>
+    <button onclick="selectFrameColor(this, 'Pink')">Baby Pink</button>
+    <button onclick="selectFrameColor(this, '#E1BEE7')">Lavender Purple</button>
+    <button onclick="selectFrameColor(this, '#B3E5FC')">Baby Blue</button>
+    <button onclick="selectFrameColor(this, '#C8E6C9')">Mint Green</button>
+    <button onclick="selectFrameColor(this, '#FFF9C4')">Soft Yellow</button>
+    <button onclick="selectFrameColor(this, '#E0E0E0')">Light Grey</button>
+    <button onclick="selectFrameColor(this, 'PeachPuff')">Peace</button>
+  </div>
+
+  <div class="options-title">Frame Your Sticker</div>
+  <div class="btn-group" id="sticker-options">
+    <button onclick="selectStickerSet(this, '')">No Sticker</button>
+    <button onclick="selectStickerSet(this, 'cat')">Cat</button>
+    <button onclick="selectStickerSet(this, 'unicorn')">Unicorn</button>
+    <button onclick="selectStickerSet(this, 'star')">Star</button>
+    <button onclick="selectStickerSet(this, 'flower')">Flower</button>
+    <button onclick="selectStickerSet(this, 'ribbon')">Ribbon</button>
+  </div>
+
+  <div>
+    <button id="cancelBtn" onclick="window.location.href='webcam.html'">CANCEL</button>
+    <button id="downloadBtn" onclick="downloadImage()">DOWNLOAD</button>
+  </div>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    const layout = sessionStorage.getItem("layout") || "layout-a";
+    document.getElementById("layoutLabel").innerText = layout.replace('layout-', 'Layout ').toUpperCase();
+    document.getElementById("photos-container").className = layout;
+
+    const photos = JSON.parse(sessionStorage.getItem("capturedPhotos") || "[]");
+    const photoCount = layout === 'layout-c' ? 2 : 4;
+
+    for (let i = 1; i <= 4; i++) {
+      const img = document.getElementById("photo" + i);
+      if (i <= photoCount && photos[i - 1]) {
+        img.src = photos[i - 1];
+        img.style.display = "block";
+      } else {
+        img.style.display = "none";
+      }
+    }
+
+    const today = new Date();
+    const dateStr = today.toLocaleDateString("id-ID", {
+      day: '2-digit', month: '2-digit', year: '2-digit'
+    });
+    document.getElementById("timestamp").textContent = dateStr;
+
+    function selectFrameColor(btn, color) {
+      document.querySelectorAll('#frame-options button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById("photo-strip").style.backgroundColor = color.toLowerCase();
+    }
+
+    function selectStickerSet(btn, name) {
+      document.querySelectorAll('#sticker-options button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      const stickerEls = document.querySelectorAll('.sticker');
+      if (!name) {
+        stickerEls.forEach(el => el.style.display = 'none');
+      } else {
+        stickerEls.forEach((el, i) => {
+          el.src = `assets/stickers/${name}${(i % 3) + 1}.png`;
+          el.style.display = 'block';
+        });
+      }
+    }
+
+    const videos = ["assets/background.webm", "assets/video2.webm", "assets/video3.webm"];
+    let index = 0;
+    const videoEl = document.getElementById("bgVideo");
+
+    function switchVideo() {
+      videoEl.src = videos[index];
+      videoEl.play();
+      index = (index + 1) % videos.length;
+    }
+
+    switchVideo();
+    setInterval(() => {
+      videoEl.classList.add("fade-out");
+      setTimeout(() => {
+        switchVideo();
+        videoEl.classList.remove("fade-out");
+      }, 500);
+    }, 2000);
+
+    function downloadImage() {
+      html2canvas(document.getElementById("photo-strip")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = 'CutestCam_' + Date.now() + '.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>

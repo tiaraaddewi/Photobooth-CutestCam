@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome - CutestCam</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Jim+Nightshade&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -10;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .video-bg.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+  <!-- 🎥 3 Video Background fade bergantian -->
+  <video id="bg1" autoplay muted loop class="video-bg active">
+    <source src="assets/background.webm" type="video/webm">
+  </video>
+  <video id="bg2" autoplay muted loop class="video-bg">
+    <source src="assets/video2.webm" type="video/webm">
+  </video>
+  <video id="bg3" autoplay muted loop class="video-bg">
+    <source src="assets/video3.webm" type="video/webm">
+  </video>
+
+  <!-- 💖 Konten Welcome -->
+  <div class="text-center p-6 w-full max-w-sm bg-white/70 rounded shadow-lg">
+    <h1 class="text-[40px] font-bold text-rose-600 font-[Instrument_Serif] drop-shadow-[1px_1px_0px_black] uppercase mb-6">WELCOME!</h1>
+    
+    <ol class="text-left text-sm text-black font-jim+Nightshade space-y-2 mb-6">
+      <li>1. You've got a few seconds for each shot – make it count!</li>
+      <li>2. No retakes. So, strike your best pose!</li>
+      <li>3. The camera will snap your photos automatically.</li>
+      <li>4. Once you're done, download your digital copy and share the fun!</li>
+    </ol>
+
+    <p class="text-[15px] font-[jsMath-cmti10] text-black mb-6">--- LET'S GO! ---</p>
+
+    <div class="space-y-4">
+      <a href="choose-layout.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">START</button>
+      </a>
+      <a href="index.html">
+        <button class="bg-rose-300 hover:bg-rose-400 text-black px-6 py-2 rounded-full text-[17px] font-[jsMath-cmti10]">CANCEL</button>
+      </a>
+    </div>
+  </div>
+
+  <!-- 🔁 Script transisi fade video -->
+  <script>
+    const videos = [bg1, bg2, bg3];
+    let current = 0;
+
+    setInterval(() => {
+      videos.forEach(v => v.classList.remove('active'));
+      current = (current + 1) % videos.length;
+      videos[current].classList.add('active');
+    }, 2000); // Ganti setiap 2 detik
+  </script>
+
+</body>
+</html>
